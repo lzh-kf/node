@@ -13,10 +13,14 @@ class UserController extends Controller {
   async create () {
     const { ctx } = this;
     const { body } = ctx.request;
-    const { userName, password, roleId, userAccount } = body;
+    const { userName, password, roleId, userAccount, isSuper } = body;
     const params = { userName, password, userAccount, roleId };
     try {
       ctx.helper.validate(rule);
+      if (isSuper) {
+        ctx.helper.setBody(null, '不允许添加超级管理员');
+        return
+      }
       const isExcit = await ctx.service.user.findOne({ userName, userAccount });
       if (isExcit) {
         ctx.helper.setBody(null, '该用户已存在');
@@ -53,7 +57,11 @@ class UserController extends Controller {
   async update () {
     const { ctx } = this;
     const { body } = ctx.request;
-    const { userName, password, roleId, _id } = body;
+    const { userName, password, roleId, _id, isSuper } = body;
+    if (isSuper) {
+      ctx.helper.setBody(null, '不允许添加超级管理员');
+      return
+    }
     try {
       const rules = {
         userName: { type: 'string', required: true },
@@ -105,3 +113,4 @@ class UserController extends Controller {
   }
 }
 module.exports = UserController;
+
