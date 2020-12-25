@@ -6,9 +6,9 @@ class BaseService extends CurdService {
     super(model);
     this.model = model;
   }
-  async paginationFind(query = {}) {
+  async paginationFind (query = {}, ignoreParam) {
     try {
-      const data = await this.index(query);
+      const data = await this.index(query, ignoreParam);
       return data;
     } catch (error) {
       return error;

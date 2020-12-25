@@ -9,12 +9,12 @@ class PaginationService extends Service {
     this.model = model;
   }
   // 查询
-  async index(query = {}) {
+  async index (query = {}, ignoreParam = {}) {
     try {
-      const [ beginRow, endRow ] = this.getPaginationParams(query);
+      const [beginRow, endRow] = this.getPaginationParams(query);
       const params = this.getQueryParams(query);
       const count = await this.model.count(params);
-      const list = await this.model.find(params).skip(beginRow).limit(endRow)
+      const list = await this.model.find(params, ignoreParam).skip(beginRow).limit(endRow)
         .lean(true);
       const docs = {
         count,
@@ -26,21 +26,26 @@ class PaginationService extends Service {
     }
   }
   // 获取查询参数
-  getQueryParams(query) {
+  getQueryParams (query) {
     const params = {};
-    const filterKeys = [ 'pageNum', 'pageSize' ];
+    const filterKeys = ['pageNum', 'pageSize'];
     Object.keys(query).forEach(key => {
-      if (!filterKeys.includes(key) && query[key]) {
-        params[key] = new RegExp(query[key]);
+      if (!filterKeys.includes(key) && query[key] !== undefined) {
+        if ([true, false].includes(query[key])) {
+          params[key] = query[key];
+        } else {
+          // 模糊查询
+          params[key] = new RegExp(query[key]);
+        }
       }
     });
     return params;
   }
   // 获取分页参数
-  getPaginationParams(query) {
+  getPaginationParams (query) {
     const beginRow = Number(query.pageNum * query.pageSize - query.pageSize);
     const endRow = Number(query.pageSize || 10);
-    return [ beginRow, endRow ];
+    return [beginRow, endRow];
   }
 }
 module.exports = PaginationService;

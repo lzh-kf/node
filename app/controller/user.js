@@ -102,19 +102,11 @@ class UserController extends Controller {
         userName: { type: 'string', maxLength: 30, required: false },
       };
       ctx.helper.validate(rules);
-      const data = await ctx.service.user.paginationFind(ctx.request.body);
-      this.setData(data.list);
+      const data = await ctx.service.user.paginationFind({ ...ctx.request.body, isSuper: false }, { password: 0 });
       ctx.helper.setBody(data);
     } catch (error) {
       ctx.helper.setBody(null, error);
     }
-  }
-  setData (data) {
-    // 过滤超级管理员
-    data = data.filter(item => !item.isSuper)
-    data.forEach((item) => {
-      delete item.password;
-    });
   }
 }
 module.exports = UserController;
