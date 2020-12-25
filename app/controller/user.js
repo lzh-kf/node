@@ -43,11 +43,16 @@ class UserController extends Controller {
         _id: { type: 'string', required: true },
       };
       ctx.helper.validate(rule, { _id: 'ID' });
-      const userInfo = await ctx.service.user.del({ _id });
-      if (userInfo) {
-        ctx.helper.setBody({ message: '删除成功' });
+      const userInfo = await ctx.service.user.findOne({ _id });
+      if (userInfo.isSuper) {
+        ctx.helper.setBody(null, '不允许删除超级管理员');
       } else {
-        ctx.helper.setBody(null, '删除失败');
+        const userInfo = await ctx.service.user.del({ _id });
+        if (userInfo) {
+          ctx.helper.setBody({ message: '删除成功' });
+        } else {
+          ctx.helper.setBody(null, '删除失败');
+        }
       }
     } catch (error) {
       ctx.helper.setBody(null, error);
