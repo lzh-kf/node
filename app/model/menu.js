@@ -1,5 +1,7 @@
 'use strict';
 
+const defaultSchema = require('../utils/baseModel');
+
 // 菜单表
 module.exports = app => {
   const mongoose = app.mongoose;
@@ -34,18 +36,7 @@ module.exports = app => {
       type: String,
       maxlength: 100,
     },
-    // 创建时间
-    createTime: {
-      required: false,
-      type: Date,
-      default: new Date(),
-    },
-    // 更新时间
-    updateTime: {
-      required: false,
-      type: Date,
-      default: new Date(),
-    },
+    ...defaultSchema
   });
   return mongoose.model('Menu', MenuSchema);
 };

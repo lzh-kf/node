@@ -1,5 +1,7 @@
 'use strict';
 
+const defaultSchema = require('../utils/baseModel');
+
 module.exports = app => {
   const mongoose = app.mongoose;
   mongoose.set('useFindAndModify', false);
@@ -25,26 +27,15 @@ module.exports = app => {
       maxlength: 300,
       default: null,
     },
-    // 创建时间
-    createTime: {
-      required: false,
-      type: Date,
-      default: new Date(),
-    },
-    // 更新时间
-    updateTime: {
-      required: false,
-      type: Date,
-      default: new Date(),
-    },
     // 性别
     gender: {
       required: false,
       type: String,
       default: '0',
       // 0代表女 1代表男
-      enum: [ '0', '1' ],
+      enum: ['0', '1'],
     },
+    ...defaultSchema
   });
   return mongoose.model('Student', StudentSchema);
 };

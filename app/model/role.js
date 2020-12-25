@@ -1,5 +1,7 @@
 'use strict';
 
+const defaultSchema = require('../utils/baseModel');
+
 // 角色表
 module.exports = app => {
   const mongoose = app.mongoose;
@@ -25,18 +27,7 @@ module.exports = app => {
       required: true,
       type: Array,
     },
-    // 创建时间
-    createTime: {
-      required: false,
-      type: Date,
-      default: new Date(),
-    },
-    // 更新时间
-    updateTime: {
-      required: false,
-      type: Date,
-      default: new Date(),
-    },
+    ...defaultSchema
   });
   return mongoose.model('Role', RoleSchema);
 };
