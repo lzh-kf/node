@@ -16,24 +16,24 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1600074591429_4676';
 
   // 运行中间件配置
-  config.middleware = ['authentication', 'checkToken'];
+  config.middleware = ['authentication', 'checkToken', 'checkPermission'];
 
   // 配置鉴权白名单
   config.authentication = {
     enable: true,
-    ignore: ['/login', '/public/', '/logout'], // 哪些请求不需要
+    ignore: ['/login', '/public/', '/logout', '/refreshToken'], // 哪些请求不需要
   };
 
   // 配置权限白名单
-  // config.checkPermission = {
-  //   enable: true,
-  //   ignore: ['/login', '/public/', '/queryMenusAndPermission', '/logout', '/'], // 哪些请求不需要校验权限
-  // };
+  config.checkPermission = {
+    enable: true,
+    ignore: ['/login', '/public/', '/queryMenusAndPermission', '/refreshToken'] // 哪些请求不需要校验权限
+  };
 
   // 配置校验无效token白名单
   config.checkToken = {
     enable: true,
-    ignore: ['/login'], // 哪些请求不需要认证
+    ignore: ['/login', '/refreshToken'], // 哪些请求不需要认证
   };
 
   config.publicKey = 'egg-key';

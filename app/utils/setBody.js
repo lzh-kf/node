@@ -9,7 +9,7 @@ const { dataType } = require('./index');
   */
 /* code映射
 1001 token失效 */
-function setBody(data, error, err_code, ctx) {
+function setBody (data, error, err_code, ctx) {
   if (error) {
     const type = dataType(error);
     if (type === 'object') {
@@ -19,7 +19,7 @@ function setBody(data, error, err_code, ctx) {
       };
     } else if (type === 'string') {
       ctx.body = {
-        err_code: 1,
+        err_code: err_code || 1,
         error: {
           message: error,
         },

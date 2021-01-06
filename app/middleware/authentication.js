@@ -1,6 +1,7 @@
 'use strict';
+let message = 'token已过期'
 module.exports = () => {
-  return async function(ctx, next) {
+  return async function (ctx, next) {
     const authorization = ctx.request.headers.authorization;
     const publicKey = ctx.app.config.publicKey;
     try {
@@ -9,10 +10,10 @@ module.exports = () => {
         ctx.userInfo = valid;
         await next();
       } else {
-        ctx.helper.setBody(null, { message: '用户无权限' });
+        ctx.helper.setBody(null, { message }, 1001);
       }
     } catch (error) {
-      ctx.helper.setBody(null, '无效的token，请检查token');
+      ctx.helper.setBody(null, message, 1001);
     }
   };
 };

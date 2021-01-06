@@ -2,18 +2,17 @@
 
 const jwt = require('jsonwebtoken');
 
-function sign(payload, secretOrPrivateKey, options, callback) {
+function sign (payload, secretOrPrivateKey, options, callback) {
   return jwt.sign(payload, secretOrPrivateKey, options, callback);
 }
 
-function verify(signature, secretOrKey) {
+function verify (signature, secretOrKey) {
   return jwt.verify(signature, secretOrKey);
 }
 
-function createToken(payload, secretOrPrivateKey, options, callback) {
+function createToken (payload, secretOrPrivateKey, options, callback) {
   const defaultPayload = {
-    expiresIn: '1h',
-    notBefore: '10h',
+    expiresIn: 60,
     audience: 'lzz',
     algorithm: 'RS256',
     issuer: 'egg-server',

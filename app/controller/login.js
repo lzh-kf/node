@@ -8,6 +8,7 @@ const rule = {
   password: { type: 'string', required: true },
 };
 class HomeController extends Controller {
+  // 登录
   async login () {
     const { ctx } = this;
     const { body } = ctx.request;
@@ -26,6 +27,7 @@ class HomeController extends Controller {
       ctx.helper.setBody(null, error);
     }
   }
+  // 登出
   async logout () {
     const { ctx } = this;
     const tokenId = ctx.request.headers.authorization;
@@ -39,6 +41,27 @@ class HomeController extends Controller {
       ctx.helper.setBody(null, error);
     }
   }
+  // 刷新token
+  async refreshToken () {
+    const {ctx} = this;
+    const userAccount = ctx.request.body.userAccount;
+    try {
+      ctx.helper.validate({
+        userAccount: { type: 'string', required: true },
+      });
+      const userInfo = await ctx.service.user.findOne({ userAccount });
+      if (userInfo) {
+        const { userAccount, roleId, isSuper } = userInfo;
+        const token = ctx.helper.jwt.createToken({ roleId, userAccount, isSuper }, ctx.app.config.publicKey);
+        ctx.helper.setBody({ token });
+      } else {
+        ctx.helper.setBody(null, '该账号下无用户信息');
+      }
+    } catch (error) {
+      ctx.helper.setBody(null, error);
+    }
+  }
+  // 查询菜单和权限
   async queryMenusAndPermission () {
     const { ctx, app } = this;
     const { roleId, userAccount, isSuper } = ctx.userInfo;

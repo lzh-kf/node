@@ -1,7 +1,7 @@
 'use strict';
 const { interfaceMap } = require('../utils/const');
 module.exports = () => {
-  return async function(ctx, next) {
+  return async function (ctx, next) {
     const authorization = ctx.request.headers.authorization;
     const publicKey = ctx.app.config.publicKey;
     try {
@@ -16,13 +16,13 @@ module.exports = () => {
         if (isexcit) {
           await next();
         } else {
-          ctx.helper.setBody(null, { message: '用户无权限' });
+          ctx.helper.setBody(null, { message: '用户无权限' }, 1003);
         }
       } else {
-        ctx.helper.setBody(null, { message: '用户无权限' });
+        ctx.helper.setBody(null, { message: '用户无权限' }, 1003);
       }
     } catch (error) {
-      ctx.helper.setBody(null, 'token校验失败');
+      ctx.helper.setBody(null, 'token校验失败', 1001);
     }
   };
 };

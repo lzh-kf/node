@@ -1,12 +1,13 @@
 'use strict';
 let tokenIds = null;
+let message = '无效token，请重新登录'
 module.exports = () => {
-  return async function(ctx, next) {
+  return async function (ctx, next) {
     const authorization = ctx.request.headers.authorization;
     try {
       if (tokenIds) {
         if (tokenIds.includes(authorization)) {
-          ctx.helper.setBody(null, { message: 'token已过期，请重新登录' });
+          ctx.helper.setBody(null, { message }, 1002);
         } else {
           await next();
         }
@@ -15,7 +16,7 @@ module.exports = () => {
         _tokenIds = _tokenIds.map(item => item.tokenId);
         tokenIds = _tokenIds;
         if (_tokenIds.includes(authorization)) {
-          ctx.helper.setBody(null, { message: 'token已过期，请重新登录' });
+          ctx.helper.setBody(null, { message }, 1002);
         } else {
           await next();
         }

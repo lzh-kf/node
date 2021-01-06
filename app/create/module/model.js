@@ -1,5 +1,7 @@
 'use strict';
 
+const defaultSchema = require('../utils/baseModel');
+
 `module.exports = app => {
   const mongoose = app.mongoose;
   mongoose.set('useFindAndModify', false);
@@ -9,6 +11,7 @@
       required: true,
       type: String,
     },
+    ...defaultSchema
   });
   return mongoose.model('{{tableName}}', {{model}}Schema);
 }`;
