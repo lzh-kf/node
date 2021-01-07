@@ -8,7 +8,7 @@ const rule = {
   password: { type: 'string', required: true },
 };
 class HomeController extends Controller {
-  //登录
+  // 登录
   async login () {
     const { ctx } = this;
     const { body } = ctx.request;
