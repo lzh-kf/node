@@ -12,7 +12,7 @@ class MenuController extends Controller {
   async create () {
     const { ctx } = this;
     const { body } = ctx.request;
-    const { menuName, path, componentFilePath, parentId } = body;
+    const { menuName, path, componentFilePath, parentId, icon } = body;
     const params = { menuName, path, componentFilePath, icon };
     try {
       ctx.helper.validate(rule);
