@@ -27,13 +27,13 @@ module.exports = appInfo => {
   // 配置权限白名单
   config.checkPermission = {
     enable: true,
-    ignore: ['/login', '/public/', '/queryMenusAndPermission', '/refreshToken'] // 哪些请求不需要校验权限
+    ignore: ['/login', '/public/', '/queryMenusAndPermission', '/refreshToken', '/logout'] // 哪些请求不需要校验权限
   };
 
   // 配置校验无效token白名单
   config.checkToken = {
     enable: true,
-    ignore: ['/login', '/refreshToken'], // 哪些请求不需要认证
+    ignore: ['/login', '/refreshToken', '/logout'], // 哪些请求不需要认证
   };
 
   config.publicKey = 'egg-key';

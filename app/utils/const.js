@@ -28,6 +28,8 @@ const interfaceMap = {
   '/student/del': 'student.del',
   '/student/query': 'student.query',
   '/student/download': 'student.download',
+  // 上传
+  '/base/upload': 'base.upload'
 };
 
 module.exports = {

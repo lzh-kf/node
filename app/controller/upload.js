@@ -3,14 +3,15 @@
 const Controller = require('egg').Controller;
 
 class UploadController extends Controller {
-  async index() {
+  async index () {
     const { ctx } = this;
     try {
       const file = ctx.request.files[0];
-      const flag = await ctx.helper.checkFileSize(file.filepath, 2);
+      const size = 2
+      const flag = await ctx.helper.checkFileSize(file.filepath, size);
       if (!flag) {
         ctx.helper.setBody(null, {
-          message: '上传文件大小最大为2M',
+          message: `上传文件大小最大为${size}M`,
         });
         return;
       }

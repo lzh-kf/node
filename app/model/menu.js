@@ -36,6 +36,11 @@ module.exports = app => {
       type: String,
       maxlength: 100,
     },
+    // 图标
+    icon: {
+      required: true,
+      type: String,
+    },
     ...defaultSchema
   });
   return mongoose.model('Menu', MenuSchema);

@@ -3,25 +3,29 @@
 const { isEmail, isMobile, isDate } = require('./regexp');
 const { toString } = Object.prototype;
 
-function dataType(value) {
+function dataType (value) {
   return toString.call(value).substr(8).replace(']', '')
     .toLowerCase();
 }
 
-function checkEmail(value) {
+function checkEmail (value) {
   return isEmail.test(value);
 }
 
-function checkMobile(value) {
+function checkMobile (value) {
   return isMobile.test(value);
 }
 
-function checkDate(value) {
+function checkDate (value) {
   return isDate.test(value);
 }
 
-function isExict(value) {
+function isExict (value) {
   return value !== undefined && value !== null && value !== '';
+}
+
+function getTimestamp () {
+  return new Date().getTime()
 }
 
 module.exports = {
@@ -30,4 +34,5 @@ module.exports = {
   checkDate,
   dataType,
   isExict,
+  getTimestamp
 };

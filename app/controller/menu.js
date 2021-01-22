@@ -5,6 +5,7 @@ const rule = {
   menuName: { type: 'string', required: true },
   path: { type: 'string', required: true },
   componentFilePath: { type: 'string', required: true },
+  icon: { type: 'string', required: true },
 };
 class MenuController extends Controller {
   // 创建
@@ -12,7 +13,7 @@ class MenuController extends Controller {
     const { ctx } = this;
     const { body } = ctx.request;
     const { menuName, path, componentFilePath, parentId } = body;
-    const params = { menuName, path, componentFilePath };
+    const params = { menuName, path, componentFilePath, icon };
     try {
       ctx.helper.validate(rule);
       const isExcit = await ctx.service.menu.findOne(params);
@@ -63,7 +64,7 @@ class MenuController extends Controller {
   async update () {
     const { ctx } = this;
     const { body } = ctx.request;
-    const { menuName, path, componentFilePath, menuId, parentId = 0 } = body;
+    const { menuName, path, componentFilePath, menuId, icon, parentId = 0 } = body;
     try {
       const customRule = {
         menuId: { type: 'number', required: true },
@@ -75,6 +76,7 @@ class MenuController extends Controller {
         componentFilePath,
         menuId,
         parentId,
+        icon,
         updateTime: new Date(),
       };
       const Info = await ctx.service.menu.update({ menuId }, menuInfo);
