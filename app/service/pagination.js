@@ -1,4 +1,5 @@
 'use strict';
+const dayjs = require('dayjs')
 
 const Service = require('egg').Service;
 
@@ -16,14 +17,23 @@ class PaginationService extends Service {
       const count = await this.model.count(params);
       const list = await this.model.find(params, ignoreParam).skip(beginRow).limit(endRow)
         .lean(true);
-      const docs = {
+      this.formatDate(list)
+      return {
         count,
         list,
       };
-      return docs;
     } catch (error) {
       return error;
     }
+  }
+  formatDate (list) {
+    list.forEach(item => {
+      ['createTime', 'updateTime'].forEach(key => {
+        if (item[key] && dayjs(item[key]).isValid()) {
+          item[key] = dayjs(item[key]).format('YYYY-MM-DD HH:mm:ss')
+        }
+      })
+    })
   }
   // 获取查询参数
   getQueryParams (query) {
