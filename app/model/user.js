@@ -17,6 +17,11 @@ module.exports = app => {
       type: String,
       required: true,
     },
+    // 邮箱
+    email: {
+      type: String,
+      required: true,
+    },
     // 密码
     password: {
       type: String,

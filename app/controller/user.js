@@ -1,10 +1,12 @@
 'use strict';
 
 const Controller = require('egg').Controller;
+const sendEmail = require('../utils/email')
 const rule = {
   userName: { type: 'string', required: true },
   userAccount: { type: 'string', required: true },
   password: { type: 'string', required: true },
+  sourcePassword: { type: 'string', required: true },
   roleId: { type: 'array', required: true },
 };
 class UserController extends Controller {
@@ -13,8 +15,8 @@ class UserController extends Controller {
   async create () {
     const { ctx } = this;
     const { body } = ctx.request;
-    const { userName, password, roleId, userAccount, isSuper } = body;
-    const params = { userName, password, userAccount, roleId };
+    const { userName, password, roleId, userAccount, isSuper, email, sourcePassword } = body;
+    const params = { userName, password, userAccount, roleId, email };
     try {
       ctx.helper.validate(rule);
       if (isSuper) {
@@ -26,6 +28,16 @@ class UserController extends Controller {
         ctx.helper.setBody(null, '该用户已存在');
       } else {
         const Info = await ctx.service.user.save(params);
+        try {
+          sendEmail({
+            email,
+            subject: '后台管理账号注册信息',
+            html: `<p>账号:${Info.userAccount}</p>
+          <p>密码:${sourcePassword}</p>
+           <a href="localhost:8080/login">登陆网址</a>`});
+        } catch (error) {
+          ctx.logger.info('发送失败', error)
+        }
         Info && ctx.helper.setBody({ message: '创建成功' });
       }
     } catch (error) {
@@ -62,7 +74,7 @@ class UserController extends Controller {
   async update () {
     const { ctx } = this;
     const { body } = ctx.request;
-    const { userName, password, roleId, _id, isSuper } = body;
+    const { userName, password, roleId, _id, isSuper, email, sourcePassword } = body;
     if (isSuper) {
       ctx.helper.setBody(null, '不允许添加超级管理员');
       return
@@ -77,6 +89,7 @@ class UserController extends Controller {
       const userInfo = {
         userName,
         roleId,
+        email,
         updateTime: new Date(),
       };
       if (password) {
@@ -85,6 +98,18 @@ class UserController extends Controller {
       const Info = await ctx.service.user.update({ _id }, userInfo);
       if (Info) {
         ctx.helper.setBody({ message: '更新成功' });
+        if (sourcePassword) {
+          try {
+            sendEmail({
+              email,
+              subject: '后台管理账号变更后信息',
+              html: `<p>账号:${Info.userAccount}</p>
+            <p>密码:${sourcePassword}</p>
+             <a href="localhost:8080/login">登陆网址</a>`});
+          } catch (error) {
+            ctx.logger.info('发送失败', error)
+          }
+        }
       } else {
         ctx.helper.setBody(null, { message: '更新失败' });
       }
@@ -100,6 +125,7 @@ class UserController extends Controller {
         pageSize: { type: 'number', max: 100, min: 1, required: true },
         pageNum: { type: 'number', min: 1, required: true },
         userName: { type: 'string', maxLength: 30, required: false },
+        email: { type: 'string', maxLength: 30, required: false },
       };
       ctx.helper.validate(rules);
       const data = await ctx.service.user.paginationFind({ ...ctx.request.body, isSuper: false }, { password: 0 });

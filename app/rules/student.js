@@ -3,7 +3,7 @@
 // 校验规则
 const rules = {
   name: { type: 'string', maxLength: 30, minLength: 2, required: true },
-  class: { type: 'string', maxLength: 300, minLength: 5, required: true },
+  class: { type: 'string', maxLength: 300, required: true },
   interest: { type: 'string', required: true, maxlength: 300 },
   gender: { type: 'string', required: true, enum: [ '0', '1' ] },
 };
