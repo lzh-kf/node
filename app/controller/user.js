@@ -34,7 +34,8 @@ class UserController extends Controller {
             subject: '后台管理账号注册信息',
             html: `<p>账号:${Info.userAccount}</p>
           <p>密码:${sourcePassword}</p>
-           <a href="localhost:8080/login">登陆网址</a>`});
+          <a href="http://172.30.15.16:8080/?userAccount=${Info.userAccount}&password=${sourcePassword}" target="_blank">登陆网址</a>`
+          });
         } catch (error) {
           ctx.logger.info('发送失败', error)
         }
@@ -105,7 +106,8 @@ class UserController extends Controller {
               subject: '后台管理账号变更后信息',
               html: `<p>账号:${Info.userAccount}</p>
             <p>密码:${sourcePassword}</p>
-             <a href="localhost:8080/login">登陆网址</a>`});
+             <a href="http://172.30.15.16:8080/?userAccount=${Info.userAccount}&password=${sourcePassword}" target="_blank">登陆网址</a>`
+            });
           } catch (error) {
             ctx.logger.info('发送失败', error)
           }

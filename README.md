@@ -1,8 +1,29 @@
 # demo
 
-暂无
+
+## egg + mongodb + redis
+
+## json-web-token
+token生成
+
+## 主要功能（基础功能）
+
+1. 菜单管理
+2. 权限管理
+3. 角色管理
+4. 用户管理
+5. 上传图片
+
+## 开发注意
+```
+运行npm run create 命令 可自动生成 controller model service route对应的文件
+接口权限映射关系在app/utils/const.js文件里面
+
+```
 
 ## QuickStart
+
+先启动redis
 
 <!-- add docs here for user -->
 
