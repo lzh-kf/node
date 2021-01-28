@@ -1,10 +1,6 @@
 # demo
 
-
 ## egg + mongodb + redis
-
-## json-web-token
-token生成
 
 ## 主要功能（基础功能）
 

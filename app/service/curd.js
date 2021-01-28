@@ -7,16 +7,26 @@ class CurdService extends PaginationService {
     this.model = model;
   }
   // 查询所有
-  async findAll(query) {
+  async findAll (query = {}) {
     try {
-      const info = await this.model.find(query).lean(true);
+      const info = await this.model.find(this.filterQuery(query)).lean(true);
       return info;
     } catch (error) {
       return error;
     }
   }
+  filterQuery (query) {
+    const ignoreParams = ['pageNum', 'pageSize']
+    const result = {}
+    Object.keys(query).forEach(key => {
+      if (!ignoreParams.includes(key) && query[key] !== undefined && query[key] !== '') {
+        result[key] = query[key]
+      }
+    })
+    return result
+  }
   // 查询单个
-  async findOne(query) {
+  async findOne (query) {
     try {
       const info = this.model.findOne(query);
       return info;
@@ -25,7 +35,7 @@ class CurdService extends PaginationService {
     }
   }
   // 保存
-  async save(params) {
+  async save (params) {
     try {
       const model = new this.model(params);
       const info = await model.save();
@@ -35,7 +45,7 @@ class CurdService extends PaginationService {
     }
   }
   // 更新
-  async update(query, doc) {
+  async update (query, doc) {
     try {
       const info = await this.model.findOneAndUpdate(query, doc);
       return info;
@@ -44,7 +54,7 @@ class CurdService extends PaginationService {
     }
   }
   // 删除
-  async del(query) {
+  async del (query) {
     try {
       const info = await this.model.findOneAndDelete(query);
       return info;

@@ -101,19 +101,13 @@ class StudentCOntroller extends Controller {
   async download () {
     const { ctx } = this;
     const rules = {
-      pageSize: { type: 'number', max: 100, min: 1, required: true },
-      pageNum: { type: 'number', min: 1, required: true },
       name: { type: 'string', maxLength: 30, required: false },
       class: { type: 'string', maxLength: 300, required: false },
       gender: { type: 'string', required: false, emun: ['0', '1'] },
       interest: { type: 'string', maxLength: 300, required: false },
     };
-    const customMap = {
-      pageSize: 'pageSize',
-      pageNum: 'pageNum',
-    };
     try {
-      ctx.helper.validate(rules, { ...map, ...customMap });
+      ctx.helper.validate(rules, map);
       const studentInfo = await ctx.service.student.findAll(ctx.request.body);
       const buffer = await ctx.service.excel.downlaod(studentInfo, '学生信息表.xls');
       ctx.helper.setBody(buffer);

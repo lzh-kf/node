@@ -17,8 +17,7 @@ class ExportExcelService extends Service {
     try {
       const workbook = new ExcelJS.Workbook();
       const sheet = workbook.addWorksheet('sheet');
-      const sheet1 = workbook.addWorksheet('sheet1');
-      const sheets = [ sheet, sheet1 ];
+      const sheets = [ sheet ];
       sheets.forEach(item => {
         item.columns = [
           { header: '名字', key: 'name', width: 10 },
